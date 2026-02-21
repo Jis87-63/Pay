@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="UTF-8">
+<title>Teste M-Pesa</title>
+</head>
+<body>
+<h1>Teste Pagamento M-Pesa Sandbox 🇲🇿</h1>
+
+<form id="formPagar">
+  <label>MSISDN (Cliente):</label>
+  <input type="text" id="msisdn" placeholder="25884XXXXXXX" required>
+  <button type="submit">Pagar 10 MZN</button>
+</form>
+
+<pre id="resultado"></pre>
+
+<script>
+const form = document.getElementById("formPagar");
+const resultado = document.getElementById("resultado");
+
+form.addEventListener("submit", async (e) => {
+  e.preventDefault();
+  const msisdn = document.getElementById("msisdn").value;
+
+  try {
+    const res = await fetch("/pagar", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ msisdn })
+    });
+
+    const data = await res.json();
+    resultado.textContent = JSON.stringify(data, null, 2);
+  } catch (err) {
+    resultado.textContent = err;
+  }
+});
+</script>
+</body>
+</html>
